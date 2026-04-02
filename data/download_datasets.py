@@ -22,7 +22,7 @@ def download(dataset: str, dest: Path) -> None:
     dest.mkdir(parents=True, exist_ok=True)
     print(f"Downloading {dataset} -> {dest}")
     result = subprocess.run(
-        ["kaggle", "datasets", "download", "-d", dataset, "-p", str(dest), "--unzip"],
+        [sys.executable, "-m", "kaggle", "datasets", "download", "-d", dataset, "-p", str(dest), "--unzip"],
         capture_output=False,
     )
     if result.returncode != 0:

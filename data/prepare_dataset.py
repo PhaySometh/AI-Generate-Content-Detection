@@ -55,7 +55,9 @@ def main():
     genimage_ai = RAW_DIR / "genimage"
     genimage_real = RAW_DIR / "genimage" / "imagenet_ai_0419_biggan"  # adjust if needed
     # Real images are in a separate 'val' or 'imagenet' folder depending on version
-    for folder in genimage_ai.iterdir():
+    if not genimage_ai.exists():
+        print("  [INFO] GenImage not found, skipping.")
+    for folder in (genimage_ai.iterdir() if genimage_ai.exists() else []):
         if folder.is_dir() and "real" in folder.name.lower():
             batch = collect_images(folder, 0)
             print(f"  GenImage REAL {folder.name}: {len(batch)} images")
