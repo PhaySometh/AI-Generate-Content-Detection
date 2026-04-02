@@ -25,7 +25,7 @@ def load_model(device: str = "cpu") -> nn.Module:
             "then copy the weights file to backend/model/weights/."
         )
     model = build_model()
-    state_dict = torch.load(MODEL_PATH, map_location=device)
+    state_dict = torch.load(MODEL_PATH, map_location=device, weights_only=True)
     model.load_state_dict(state_dict)
     model.eval()
     return model

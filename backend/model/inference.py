@@ -41,8 +41,12 @@ def run_inference(image_path: str) -> dict:
         logits = model(tensor)
         probs = F.softmax(logits, dim=1)
 
-    pred_class = int(probs.argmax(dim=1))
-    confidence = float(probs[0][pred_class])
+    # Use a raised threshold: require ≥65% confidence to label as AI_GENERATED.
+    # The default argmax (50%) over-predicts AI due to incomplete training.
+    AI_THRESHOLD = 0.65
+    ai_prob = float(probs[0][1])
+    pred_class = 1 if ai_prob >= AI_THRESHOLD else 0
+    confidence = ai_prob if pred_class == 1 else float(probs[0][0])
     label = LABELS[pred_class]
 
     heatmap_b64 = _gradcam.generate(tensor, pred_class, image_path)
