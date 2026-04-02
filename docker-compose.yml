@@ -11,6 +11,11 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d ai_detection"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   backend:
     build:
@@ -23,9 +28,10 @@ services:
       TEMP_DIR: /tmp/ai_detector
       MODEL_VERSION: efficientnet-b0-v1
     volumes:
-      - ./backend/model/weights:/app/model/weights
+      - ./backend/model/weights:/app/backend/model/weights
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   frontend:
     build:
@@ -35,6 +41,7 @@ services:
       - "3000:3000"
     environment:
       NEXT_PUBLIC_API_URL: http://localhost:8000
+      API_INTERNAL_URL: http://backend:8000
     depends_on:
       - backend
 

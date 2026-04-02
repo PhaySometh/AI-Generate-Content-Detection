@@ -1,6 +1,7 @@
 import { ApiError, DetectionResult } from "./types";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+const API_INTERNAL = process.env.API_INTERNAL_URL ?? API_BASE;
 
 async function handleResponse<T>(res: Response): Promise<T> {
   if (!res.ok) {
@@ -30,6 +31,6 @@ export async function analyzeUrl(url: string): Promise<DetectionResult> {
 }
 
 export async function getResult(id: string): Promise<DetectionResult> {
-  const res = await fetch(`${API_BASE}/result/${id}`);
+  const res = await fetch(`${API_INTERNAL}/result/${id}`);
   return handleResponse<DetectionResult>(res);
 }

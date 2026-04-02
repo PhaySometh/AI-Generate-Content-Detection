@@ -12,7 +12,7 @@ class DetectionResult(BaseModel):
     id: UUID
     label: str                      # "REAL" | "AI_GENERATED"
     confidence: float               # 0.0 – 1.0
-    confidence_pct: str             # "87.3%" pre-formatted
+    confidence_pct: Optional[str] = None  # "87.3%" pre-formatted
     explanation: str
     heatmap_b64: Optional[str]      # base64 PNG; None if generation failed
     source_type: str                # "upload" | "url"
