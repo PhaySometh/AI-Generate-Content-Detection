@@ -9,6 +9,7 @@ export default function UrlInput({ onUrl, disabled }: Props) {
   const [value, setValue] = useState("");
 
   function handleSubmit(e: FormEvent) {
+    // Trim input and only submit non-empty URLs.
     e.preventDefault();
     const trimmed = value.trim();
     if (trimmed) onUrl(trimmed);

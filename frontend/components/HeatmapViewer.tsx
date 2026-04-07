@@ -7,6 +7,7 @@ interface Props {
 export default function HeatmapViewer({ heatmap_b64 }: Props) {
   const [showHeatmap, setShowHeatmap] = useState(true);
 
+  // Graceful fallback when backend cannot generate a heatmap.
   if (!heatmap_b64) {
     return (
       <div className="rounded-xl border border-gray-200 bg-gray-50 p-6 text-center text-sm text-gray-500">
@@ -18,7 +19,9 @@ export default function HeatmapViewer({ heatmap_b64 }: Props) {
   return (
     <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
       <div className="mb-3 flex items-center justify-between">
-        <h2 className="text-sm font-semibold text-gray-700">Grad-CAM Heatmap</h2>
+        <h2 className="text-sm font-semibold text-gray-700">
+          Grad-CAM Heatmap
+        </h2>
         <button
           onClick={() => setShowHeatmap((v) => !v)}
           className="rounded-md border border-gray-300 px-3 py-1 text-xs font-medium text-gray-600
@@ -29,6 +32,7 @@ export default function HeatmapViewer({ heatmap_b64 }: Props) {
       </div>
 
       {showHeatmap ? (
+        // Backend returns a base64 PNG string, rendered directly in the browser.
         <img
           src={`data:image/png;base64,${heatmap_b64}`}
           alt="Grad-CAM heatmap overlay"

@@ -16,6 +16,7 @@ export default function Home() {
   const [error, setError] = useState<ApiError | null>(null);
 
   async function handleFile(file: File) {
+    // Run upload analysis and redirect to the result page on success.
     setError(null);
     setIsLoading(true);
     try {
@@ -28,6 +29,7 @@ export default function Home() {
   }
 
   async function handleUrl(url: string) {
+    // Run URL analysis and redirect to the result page on success.
     setError(null);
     setIsLoading(true);
     try {
@@ -40,12 +42,16 @@ export default function Home() {
   }
 
   return (
+    // Single-page entry flow with tabbed input mode (upload vs URL).
     <main className="min-h-screen bg-gray-50 py-16 px-4">
       <div className="mx-auto max-w-lg">
         <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold text-gray-900">AI Image Detector</h1>
+          <h1 className="text-3xl font-bold text-gray-900">
+            AI Image Detector
+          </h1>
           <p className="mt-2 text-gray-500">
-            Upload an image or paste a URL to detect whether it was AI-generated or real.
+            Upload an image or paste a URL to detect whether it was AI-generated
+            or real.
           </p>
         </div>
 
@@ -64,11 +70,16 @@ export default function Home() {
                 {(["upload", "url"] as Tab[]).map((tab) => (
                   <button
                     key={tab}
-                    onClick={() => { setActiveTab(tab); setError(null); }}
+                    onClick={() => {
+                      setActiveTab(tab);
+                      setError(null);
+                    }}
                     className={`flex-1 rounded-md py-2 text-sm font-medium transition-colors
-                      ${activeTab === tab
-                        ? "bg-blue-600 text-white shadow-sm"
-                        : "text-gray-500 hover:text-gray-700"}`}
+                      ${
+                        activeTab === tab
+                          ? "bg-blue-600 text-white shadow-sm"
+                          : "text-gray-500 hover:text-gray-700"
+                      }`}
                   >
                     {tab === "upload" ? "Upload File" : "Paste URL"}
                   </button>

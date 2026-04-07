@@ -13,6 +13,7 @@ interface Props {
 }
 
 export default function ResultPage({ result, error }: Props) {
+  // Fallback UI when SSR fetch fails or the ID is not found.
   if (error || !result) {
     return (
       <main className="min-h-screen bg-gray-50 py-16 px-4">
@@ -29,15 +30,20 @@ export default function ResultPage({ result, error }: Props) {
   }
 
   return (
+    // Main result presentation: prediction summary, heatmap, and explanation.
     <main className="min-h-screen bg-gray-50 py-16 px-4">
       <div className="mx-auto max-w-lg space-y-5">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900">Analysis Result</h1>
           {result.original_filename && (
-            <p className="mt-1 text-sm text-gray-500">{result.original_filename}</p>
+            <p className="mt-1 text-sm text-gray-500">
+              {result.original_filename}
+            </p>
           )}
           {result.source_url && (
-            <p className="mt-1 truncate text-sm text-gray-500">{result.source_url}</p>
+            <p className="mt-1 truncate text-sm text-gray-500">
+              {result.source_url}
+            </p>
           )}
         </div>
 
@@ -69,7 +75,10 @@ export default function ResultPage({ result, error }: Props) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
+export const getServerSideProps: GetServerSideProps<Props> = async (
+  context,
+) => {
+  // Server-side fetch prevents exposing internal service topology to the browser.
   const id = context.params?.id as string;
   try {
     const result = await getResult(id);

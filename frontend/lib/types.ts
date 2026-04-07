@@ -1,3 +1,4 @@
+// API payload returned by analyze endpoints and result lookup endpoint.
 export interface DetectionResult {
   id: string;
   label: "REAL" | "AI_GENERATED";
@@ -13,6 +14,7 @@ export interface DetectionResult {
   created_at: string;
 }
 
+// Standardized API error shape used across UI components.
 export interface ApiError {
   error: string;
   detail?: string;

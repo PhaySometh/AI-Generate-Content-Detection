@@ -5,6 +5,7 @@ interface Props {
 }
 
 export default function ErrorBanner({ error }: Props) {
+  // Normalize both string errors and typed API errors into one UI message.
   const message = typeof error === "string" ? error : error.error;
   const detail = typeof error === "object" ? error.detail : undefined;
 
