@@ -1,3 +1,5 @@
+# SQLAlchemy ORM table definitions for persisted detection results.
+
 import uuid
 from sqlalchemy import Column, String, Float, Text, Integer, DateTime
 from sqlalchemy.dialects.postgresql import UUID
@@ -6,8 +8,10 @@ from backend.db.database import Base
 
 
 class Detection(Base):
+    # Stores one completed analysis record returned to the frontend.
     __tablename__ = "detections"
 
+    # Primary identifier used by /result/{id} lookup.
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     source_type = Column(String(10), nullable=False)

@@ -1,3 +1,5 @@
+# Download image/media from URL and convert to an inference-ready image file.
+
 import os
 import subprocess
 import uuid
@@ -11,13 +13,11 @@ VIDEO_EXTENSIONS = {".mp4", ".mkv", ".webm", ".avi", ".mov", ".flv"}
 
 
 def fetch_media_from_url(url: str, temp_dir: Path) -> Path:
-    """
-    Fetches an image or video frame from a URL.
-    - For direct image URLs: downloads via requests.
-    - For other URLs: uses yt-dlp, then extracts a frame via ffmpeg for videos.
-    Returns path to a JPEG/PNG file ready for inference.
-    Raises HTTPException(422) on failure.
-    """
+    # Fetch an image or video frame from a URL.
+    # - Direct image URLs: download with requests.
+    # - Other URLs: use yt-dlp, then extract one frame with ffmpeg for videos.
+    # Returns a local image path ready for inference.
+    # Raises HTTPException(422) on recoverable fetch/processing failures.
     temp_dir.mkdir(parents=True, exist_ok=True)
     stem = f"url_{uuid.uuid4().hex}"
 

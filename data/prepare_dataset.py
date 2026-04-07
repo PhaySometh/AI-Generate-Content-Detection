@@ -1,16 +1,14 @@
-"""
-Prepare dataset from 140k Real and Fake Faces (Kaggle: xhlulu/140k-real-and-fake-faces).
+# Prepare dataset from 140k Real and Fake Faces (Kaggle: xhlulu/140k-real-and-fake-faces).
 
-Folder structure expected under data/raw/faces/:
-    real_vs_fake/
-        train/real/   train/fake/
-        valid/real/   valid/fake/
-        test/real/    test/fake/
+# Folder structure expected under data/raw/faces/:
+#     real_vs_fake/
+#         train/real/   train/fake/
+#         valid/real/   valid/fake/
+#         test/real/    test/fake/
 
-Outputs CSV manifests to data/processed/:
-    train.csv, val.csv, test.csv  (columns: filepath, label)
-    Label: 0 = REAL, 1 = AI_GENERATED
-"""
+# Outputs CSV manifests to data/processed/:
+#     train.csv, val.csv, test.csv  (columns: filepath, label)
+#     Label: 0 = REAL, 1 = AI_GENERATED
 
 import sys
 from pathlib import Path

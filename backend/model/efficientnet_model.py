@@ -1,3 +1,5 @@
+# EfficientNet-B0 model construction and trained-weight loading utilities.
+
 import torch
 import torch.nn as nn
 from torchvision import models
@@ -8,6 +10,7 @@ LABELS = {0: "REAL", 1: "AI_GENERATED"}
 
 
 def build_model() -> nn.Module:
+    # Build EfficientNet-B0 with a binary classification head (REAL vs AI).
     model = models.efficientnet_b0(weights=None)
     in_features = model.classifier[1].in_features
     model.classifier = nn.Sequential(
@@ -18,6 +21,7 @@ def build_model() -> nn.Module:
 
 
 def load_model(device: str = "cpu") -> nn.Module:
+    # Load trained weights, move model to eval mode, and return it.
     if not MODEL_PATH.exists():
         raise FileNotFoundError(
             f"Model weights not found at {MODEL_PATH}. "

@@ -1,3 +1,5 @@
+# Inference pipeline: preprocess image, run model, then build explanation and heatmap.
+
 import time
 import torch
 import torch.nn.functional as F
@@ -11,6 +13,7 @@ _gradcam = None
 
 
 def get_model(device: str = "cpu") -> torch.nn.Module:
+    # Lazily initialize and cache model + Grad-CAM objects per process.
     global _model, _gradcam
     if _model is None:
         _model = load_model(device)
@@ -19,18 +22,13 @@ def get_model(device: str = "cpu") -> torch.nn.Module:
 
 
 def run_inference(image_path: str) -> dict:
-    """
-    Runs EfficientNet-B0 inference on the given image path.
-
-    Returns:
-        {
-            "label": "REAL" | "AI_GENERATED",
-            "confidence": 0.0-1.0,
-            "heatmap_b64": "<base64 PNG string>",
-            "explanation": "<human-readable string>",
-            "processing_ms": int
-        }
-    """
+    # Run EfficientNet-B0 inference on one image and return a response-ready dict.
+    # Returned keys:
+    # - label: "REAL" | "AI_GENERATED"
+    # - confidence: probability in range [0, 1]
+    # - heatmap_b64: base64 PNG overlay
+    # - explanation: human-readable explanation text
+    # - processing_ms: end-to-end inference time in milliseconds
     t0 = time.time()
     device = "cuda" if torch.cuda.is_available() else "cpu"
     model = get_model(device)
@@ -63,6 +61,7 @@ def run_inference(image_path: str) -> dict:
 
 
 def _build_explanation(label: str, confidence: float) -> str:
+    # Generate a human-readable explanation string from prediction confidence.
     pct = round(confidence * 100, 1)
     if label == "AI_GENERATED":
         if confidence >= 0.90:

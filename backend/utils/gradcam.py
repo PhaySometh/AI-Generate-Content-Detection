@@ -1,3 +1,5 @@
+# Grad-CAM heatmap generation utility for model explainability.
+
 import base64
 import cv2
 import numpy as np
@@ -5,10 +7,8 @@ import torch
 
 
 class GradCAM:
-    """
-    Grad-CAM implementation for EfficientNet-B0.
-    Target layer: model.features[8] (final conv block before adaptive pool).
-    """
+    # Grad-CAM implementation for EfficientNet-B0.
+    # Target layer: model.features[8] (final conv block before adaptive pool).
 
     def __init__(self, model: torch.nn.Module, target_layer_name: str = "features.8"):
         self.model = model
@@ -17,6 +17,7 @@ class GradCAM:
         self._register_hooks(target_layer_name)
 
     def _get_target_layer(self, name: str):
+        # Resolve a dotted layer path (e.g., features.8) into a module object.
         parts = name.split(".")
         layer = self.model
         for part in parts:
@@ -27,6 +28,7 @@ class GradCAM:
         return layer
 
     def _register_hooks(self, layer_name: str):
+        # Attach forward/backward hooks to capture activations and gradients.
         target = self._get_target_layer(layer_name)
 
         def forward_hook(module, input, output):
@@ -39,10 +41,8 @@ class GradCAM:
         target.register_full_backward_hook(backward_hook)
 
     def generate(self, tensor: torch.Tensor, class_idx: int, original_image_path: str) -> str:
-        """
-        Returns base64-encoded PNG of Grad-CAM heatmap overlaid on the original image.
-        Returns empty string on any failure.
-        """
+        # Return base64 PNG of Grad-CAM overlay on original image.
+        # Returns empty string if generation fails.
         try:
             self.model.zero_grad()
             tensor = tensor.clone().requires_grad_(True)

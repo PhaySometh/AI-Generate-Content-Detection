@@ -1,14 +1,12 @@
-"""
-Download datasets from Kaggle.
+# Download datasets from Kaggle.
 
-Prerequisites:
-  pip install kaggle
-  Set up ~/.kaggle/kaggle.json with your API credentials.
-  See: https://www.kaggle.com/docs/api
+# Prerequisites:
+#   pip install kaggle
+#   Set up ~/.kaggle/kaggle.json with your API credentials.
+#   See: https://www.kaggle.com/docs/api
 
-Usage:
-  python data/download_datasets.py
-"""
+# Usage:
+#   python data/download_datasets.py
 
 import subprocess
 import sys
@@ -16,7 +14,6 @@ from pathlib import Path
 
 RAW_DIR = Path(__file__).parent / "raw"
 RAW_DIR.mkdir(parents=True, exist_ok=True)
-
 
 def download(dataset: str, dest: Path) -> None:
     dest.mkdir(parents=True, exist_ok=True)

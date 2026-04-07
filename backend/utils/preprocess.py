@@ -1,3 +1,5 @@
+# Image preprocessing utilities used before model inference.
+
 import cv2
 import torch
 import numpy as np
@@ -13,10 +15,8 @@ _transform = transforms.Compose([
 
 
 def preprocess_image(image_path: str) -> torch.Tensor:
-    """
-    Reads image, resizes to 224x224, converts BGR->RGB,
-    applies ImageNet normalization. Returns tensor shape (1, 3, 224, 224).
-    """
+    # Read image, resize to 224x224, convert BGR->RGB, then normalize.
+    # Returns tensor with shape (1, 3, 224, 224).
     img = cv2.imread(image_path)
     if img is None:
         raise ValueError(f"Cannot read image at {image_path}")
