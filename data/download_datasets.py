@@ -32,13 +32,13 @@ def download(dataset: str, dest: Path) -> None:
 
 
 if __name__ == "__main__":
-    # CIFAKE: Real and AI-Generated Synthetic Images
-    # https://www.kaggle.com/datasets/birdy654/cifake-real-and-ai-generated-synthetic-images
-    download("birdy654/cifake-real-and-ai-generated-synthetic-images", RAW_DIR / "cifake")
-
-    # GenImage: A Million-Scale Benchmark for Detecting AI-Generated Image
-    # https://www.kaggle.com/datasets/yangsibo/genimage
-    download("yangsibo/genimage", RAW_DIR / "genimage")
+    # 140k Real and Fake Faces (real human portraits vs StyleGAN-generated faces)
+    # https://www.kaggle.com/datasets/xhlulu/140k-real-and-fake-faces
+    # Expected structure after unzip:
+    #   data/raw/faces/real_vs_fake/train/real/, train/fake/
+    #   data/raw/faces/real_vs_fake/valid/real/, valid/fake/
+    #   data/raw/faces/real_vs_fake/test/real/,  test/fake/
+    download("xhlulu/140k-real-and-fake-faces", RAW_DIR / "faces")
 
     print("\nAll datasets downloaded to data/raw/")
     print("Next step: run  python data/prepare_dataset.py")

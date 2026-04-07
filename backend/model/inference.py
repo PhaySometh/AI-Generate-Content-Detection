@@ -41,9 +41,8 @@ def run_inference(image_path: str) -> dict:
         logits = model(tensor)
         probs = F.softmax(logits, dim=1)
 
-    # Use a raised threshold: require ≥65% confidence to label as AI_GENERATED.
-    # The default argmax (50%) over-predicts AI due to incomplete training.
-    AI_THRESHOLD = 0.65
+    # Standard threshold — v3 trained on balanced REAL + CIFAKE AI data.
+    AI_THRESHOLD = 0.50
     ai_prob = float(probs[0][1])
     pred_class = 1 if ai_prob >= AI_THRESHOLD else 0
     confidence = ai_prob if pred_class == 1 else float(probs[0][0])

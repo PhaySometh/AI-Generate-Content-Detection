@@ -3,7 +3,7 @@ import torch.nn as nn
 from torchvision import models
 from pathlib import Path
 
-MODEL_PATH = Path(__file__).parent / "weights" / "efficientnet_b0_finetuned.pth"
+MODEL_PATH = Path(__file__).parent / "weights" / "efficientnet_b0_v3.pth"
 LABELS = {0: "REAL", 1: "AI_GENERATED"}
 
 
