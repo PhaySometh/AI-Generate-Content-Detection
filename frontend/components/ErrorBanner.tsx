@@ -1,18 +1,14 @@
-import { ApiError } from "@/lib/types";
+// frontend/components/detectron/ErrorBanner.tsx
+import React from 'react';
 
-interface Props {
-  error: ApiError | string;
-}
+type Props = {
+    message: string;        // ← must be 'message'
+};
 
-export default function ErrorBanner({ error }: Props) {
-  // Normalize both string errors and typed API errors into one UI message.
-  const message = typeof error === "string" ? error : error.error;
-  const detail = typeof error === "object" ? error.detail : undefined;
-
-  return (
-    <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-800">
-      <p className="font-semibold">{message}</p>
-      {detail && <p className="mt-1 text-red-600">{detail}</p>}
-    </div>
-  );
+export default function ErrorBanner({ message }: Props) {
+    return (
+        <div className="p-4 border border-red-500/30 bg-red-500/10 text-red-400 text-sm font-mono rounded-xl">
+            {message}
+        </div>
+    );
 }
