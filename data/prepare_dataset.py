@@ -14,13 +14,24 @@ import sys
 from pathlib import Path
 
 import pandas as pd
-from sklearn.model_selection import train_test_split
 
-RAW_DIR = Path(__file__).parent / "raw" / "faces" / "real_vs_fake"
+BASE_RAW_DIR = Path(__file__).parent / "raw" / "faces"
 OUT_DIR = Path(__file__).parent / "processed"
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 IMAGE_EXTS = {".jpg", ".jpeg", ".png", ".webp"}
+
+
+def resolve_raw_dir() -> Path:
+    candidates = [
+        BASE_RAW_DIR / "real_vs_fake",
+        BASE_RAW_DIR / "real-vs-fake",
+        BASE_RAW_DIR / "real_vs_fake" / "real-vs-fake",
+    ]
+    for candidate in candidates:
+        if (candidate / "train").exists() and (candidate / "valid").exists() and (candidate / "test").exists():
+            return candidate
+    return candidates[0]
 
 
 def collect_images(folder: Path, label: int) -> list[dict]:
@@ -32,11 +43,14 @@ def collect_images(folder: Path, label: int) -> list[dict]:
 
 
 def main():
+    raw_dir = resolve_raw_dir()
+    print(f"Using dataset root: {raw_dir}")
+
     # The dataset already has train/valid/test splits — use them directly
     splits = {
-        "train": (RAW_DIR / "train" / "real", RAW_DIR / "train" / "fake"),
-        "val":   (RAW_DIR / "valid" / "real", RAW_DIR / "valid" / "fake"),
-        "test":  (RAW_DIR / "test"  / "real", RAW_DIR / "test"  / "fake"),
+        "train": (raw_dir / "train" / "real", raw_dir / "train" / "fake"),
+        "val":   (raw_dir / "valid" / "real", raw_dir / "valid" / "fake"),
+        "test":  (raw_dir / "test"  / "real", raw_dir / "test"  / "fake"),
     }
 
     for split_name, (real_folder, fake_folder) in splits.items():
@@ -73,7 +87,6 @@ def main():
         print(f"  Saved -> {out_file}\n")
 
     print("Done. Next step: open notebooks/01_eda.ipynb")
-
 
 if __name__ == "__main__":
     main()
